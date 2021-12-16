@@ -1,0 +1,20 @@
+﻿<html>
+<head>
+    <title>Add a New Question | Hilfy</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <form action="/add_new_sales_question" method="POST" id="add_new_question">
+        <br />
+        Question: <input type="text" name="question"> <br>
+<textarea rows="4" cols="50" name="answer" form="add_new_question">
+Enter Answer</textarea><br /><br />
+        Question Categroy: <select name="category">
+            <option value="How To Use Hilfy">How To Use Hilfy</option>
+        </select> <br />
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

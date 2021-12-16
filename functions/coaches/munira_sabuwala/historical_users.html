@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>All My Historical Users | Modern Monk</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="users.js"></script> -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var userRef = firebase.firestore().collection("users");
+            var allUsers = userRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var count = 1;
+                snapshot.forEach(doc => {
+                    var plan_name;
+                    if (doc.data().plan) {
+                        if (doc.data().plan.plan_name) {
+                            plan_name = doc.data().plan.plan_name;
+                        }
+                        else {
+                            plan_name = doc.data().plan;
+                        }
+                    }
+
+                    var fitness_trainer_name;
+                    if (doc.data().fitness_trainer) {
+                        if (doc.data().fitness_trainer.coach_name) {
+                            fitness_trainer_name = doc.data().fitness_trainer.coach_name;
+                        }
+                        else {
+                            fitness_trainer_name = doc.data().fitness_trainer;
+                        }
+                    }
+
+                    var dietitian_name;
+                    if (doc.data().dietitian) {
+                        if (doc.data().dietitian.coach_name) {
+                            dietitian_name = doc.data().dietitian.coach_name
+                        }
+                        else {
+                            dietitian_name = doc.data().dietitian;
+                        }
+                    }
+
+                    if (fitness_trainer_name == "Munira Fakir Sabuwala") {
+                        $("#activeusers").append('<tr><td>' + count + '</td><td>' +
+                            doc.data().user_name + '</td><td>' + doc.data().phone +
+                            '</td><td>' + doc.data().email +
+                            '</td><td>' + doc.data().prakriti +
+                            '</td><td>' + plan_name + '</td><td>' +
+                            dietitian_name + '</td><td>' +
+                            doc.data().start_date + '</td><td>' + doc.data().end_date +
+                            '</td><td>' + doc.data().date_added +
+                            '</td></tr>');
+                        count++;
+                    }
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <h1>All My Historical Users</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="activeusers">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th>Prakriti</th>
+                    <th>Plan</th>
+                    <th>Ahara Coach</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Added On</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

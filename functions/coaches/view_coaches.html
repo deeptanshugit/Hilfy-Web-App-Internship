@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>All Coaches | Modern Monk</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="users.js"></script> -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var coachRef = firebase.firestore().collection("coaches");
+            var allUsers = coachRef.get().then(snapshot => {
+                    if (snapshot.empty) {
+                    }
+
+                    var count = 1;
+                    snapshot.forEach(doc => {
+                            $("#coaches").append('<tr><td>' + count + '</td><td>' +
+                                doc.data().coach_name + '</td><td>' + doc.data().phone +
+                                '</td><td>' + doc.data().email +
+                                '</td><td>' + doc.data().coach_type+ '</td><td>' +
+                                '</td><td>' + doc.data().expertise+ '</td><td>' +
+                                doc.data().active_hours + '</td><td>' +
+                                doc.data().feedback_url + '</td><td>' +
+                                doc.data().joining_date + '</td></tr>');
+                            count++;
+                    });
+                })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <h1>All Coaches</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="coaches">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th>Coach Type</th>
+                    <th>Expertise</th>
+                    <th>Active Hours</th>
+                    <th>Feedback URL</th>
+                    <th>Joining Date</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

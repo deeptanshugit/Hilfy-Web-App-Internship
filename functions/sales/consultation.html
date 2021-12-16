@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<head>
+    <title>Consultations | Modern Monk</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300.400.500.700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <h1>Open Consultations</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="leadstable">
+                <tr>
+                    <th>Consultation With</th>
+                    <th>Personal Data</th>
+                    <th>Consultation Details</th>
+                    <th>Amount to collect</th>
+                    <th>PCOS Quiz Data</th>
+                    <th>Medical Details</th>
+                    <th style="padding-right: 150px;">Pre-Consultation Notes</th>
+                    <th style="padding-right: 100px;">Status</th>
+                </tr>
+            </table>
+            <h3 id="demo">  </h3>
+            <br>
+            <!-- <button onclick="setTimeout(myFunction,3000)">Try it</button> -->
+            <body onload="setTimeout(CountRows,5000)">
+            </body>
+        </div>
+    </div>
+
+    <!-- Script For Counting Total Number Of Rows In The Table-->
+    <script type="text/javascript">
+        function CountRows() {
+            var totalRowCount = 0;
+            var rowCount = 0;
+            var table = document.getElementById("leadstable");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                totalRowCount++;
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount++;
+                }
+            }
+            var message = "Total Row Count (with header): " + totalRowCount;
+            message += "\nRow Count (without header): " + rowCount;
+            document.getElementById("demo").innerHTML = "Total " + rowCount + " Rows in the table.";
+
+        }
+    </script>
+
+    <!-- HTML For Consultation POP UP FORM-->
+    <div class="modal fade" id="ConsultationPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Consultation Notes</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="consultationdone">
+                        <div class="form-group">
+                            <label for="recommendations" class="col-form-label">Lifestyle Recommendations (for patient)</label>
+                            <input type="text" class="form-control" id="recommendations">
+                        </div>
+
+                        <div class="form-group">
+                            <h4 style="text-align: center;"> Medication </h4>
+                            <table BORDER="1">
+                                <tr>
+                                    <td>
+                                        <label for="nameofthemedicine" name="nameofthemedicine" class="col-form-label"> Name Of The Medicine </label>
+                                    </td>
+                                    <td>
+                                        <label for="Amounttobetaken" name="amounttobetaken" class="col-form-label"> Dosage </label>
+                                    </td>
+                                    <td>
+                                        <label for="frequency" name="frequency" class="col-form-label"> Frequency </label>
+                                    </td>
+                                    <td>
+                                        <label for="othernotes" name="othernotes" class="col-form-label"> Other Notes </label>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="text" name="medicine1" class="form-control" placeholder="Medicine 1" id="medicine1">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="amount1" class="form-control" placeholder="Dosage" id="amount1">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="frequency1" class="form-control" placeholder="Frquency For Medicine 1" id="frequency1">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="othernotes1" class="form-control" placeholder="Notes For Medicine 1" id="othernotes1">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="text" name="medicine2" class="form-control" placeholder="Medicine 2" id="medicine2">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="amount2" class="form-control" placeholder="Dosage" id="amount2">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="Frequency2" class="form-control" placeholder="Frequency For Medicine 2" id="frequency2">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="othernotes2" class="form-control" placeholder="Notes For Medicine 2" id="othernotes2">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="text" name="medicine3" class="form-control" placeholder="Medicine 3" id="medicine3">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="amount3" class="form-control" placeholder="Dosage" id="amount3">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="frequency3" class="form-control" placeholder="Frquency For Medicine 3" id="frequency3">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="othernotes3" class="form-control" placeholder="Notes For Medicine 3" id="othernotes3">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="text" name="medicine4" class="form-control" placeholder="Medicine 4" id="medicine4">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="amount4" class="form-control" placeholder="Dosage" id="amount4">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="frequency4" class="form-control" placeholder="Frquency For Medicine 4" id="frequency4">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="othernotes4" class="form-control" placeholder="Notes For Medicine 4" id="othernotes4">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="text" name="medicine5" class="form-control" placeholder="Medicine 5" id="medicine5">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="amount5" class="form-control" placeholder="Dosage" id="amount5">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="frequency5" class="form-control" placeholder="Frquency For Medicine 5" id="frequency5">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="othernotes5" class="form-control" placeholder="Notes For Medicine 5" id="othernotes5">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-notes" class="col-form-label">Other Notes (for Sales Team)</label>
+                            <input type="text" class="form-control" id="consultation-notes">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="consultation_button">Send Prescription</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML For  PopUp for Rescheduling-->
+    <div class="modal fade" id="ReschedulePopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Reschedule Consultation to a Later Date</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="consultation-date" class="col-form-label">New Consultation Date</label>
+                            <input type="date" class="form-control" id="new-consultation-date" name="new-consultation-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="appoinment-time" class="col-form-label">Consultation Time</label>
+                            <input type="time" class="form-control" id="new-consultation-time" name="new-consultation-time">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="reschedule_button">Reschedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+
+            var leadRef = firebase.firestore().collection("leads");
+            leadRef.where('status', '==', 'Booked Consultation').get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+                var count = 1;
+                snapshot.forEach(doc => {
+                    var consultation = {};
+                    if (doc.data().consultation) {
+                        consultation = doc.data().consultation;
+                    }
+
+                    var amount_to_be_collected = "Rs0";
+                    if (doc.data().consultation) {
+                        if (doc.data().consultation.payment_options) {
+                            switch (doc.data().consultation.payment_options) {
+                                case "To be paid":
+                                    amount_to_be_collected = "Rs" + doc.data().consultation.charges;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    //Fill up PCOS Quiz Data
+                    if (doc.data().pcos_quiz_data) {
+                        var pcos_quiz_data = "Has ";
+                        if (doc.data().pcos_quiz_data.acne == "Yes")
+                            pcos_quiz_data += "Acne, ";
+                        if (doc.data().pcos_quiz_data.depression == "Yes")
+                            pcos_quiz_data += "Depression, ";
+                        if (doc.data().pcos_quiz_data.difficulty_losing_weight == "Yes")
+                            pcos_quiz_data += "Difficulty Losing Weight, ";
+                        if (doc.data().pcos_quiz_data.facial_hair == "Yes")
+                            pcos_quiz_data += "Facial Hair, ";
+                        if (doc.data().pcos_quiz_data.infertility == "Yes")
+                            pcos_quiz_data += "History of Infertility, ";
+                        if (doc.data().pcos_quiz_data.irregular_cycle == "Yes")
+                            pcos_quiz_data += "Irregular Cycles";
+                        pcos_quiz_data += " and the most concerning symptom is " + doc.data().pcos_quiz_data.most_concerning_symptom;
+                        pcos_quiz_data += ". Her Risk score is " + "<b>" + doc.data().pcos_quiz_data.pcos_risk + "</b>";
+                    }
+
+                    var personal_data = "<b>Name</b>: " + doc.data().name + "<b> Phone</b>: " +
+                        '<p><a href="https://api.whatsapp.com/send?phone=+91' + doc.data().phone +
+                        '&" target="_blank">' + doc.data().phone + '</a></p>' + "<b> Source</b>: " + doc.data().source;
+
+                    var consultation_details = '';
+                    if (consultation.mode)
+                        consultation_details += consultation.mode + ". ";
+                    if (consultation.date)
+                        consultation_details += "On " + consultation.date;
+                    if (consultation.time)
+                        consultation_details += ", " + consultation.time;
+
+                    var medical_data = "";
+                    if (doc.data().age)
+                        medical_data += "<b>Age</b>: " + doc.data().age + ". ";
+                    if (doc.data().weight)
+                        medical_data += "<b>Weight</b>: " + doc.data().weight + ". ";
+                    if (doc.data().height)
+                        medical_data += "<b>Height</b>: " + doc.data().height + ". ";
+                    if (doc.data().ailments)
+                        medical_data += "<b>Ailments</b>: " + doc.data().ailments + ". ";
+
+                    var notes = "<b>" + (doc.data().pre_consultant || "None") + "</b>: ";
+                    notes += (doc.data().pre_consultation_notes || 'None');
+
+                    //Show only appointments scheduled for the past or for today
+                    if ((!consultation) || (consultation && (!consultation.date || consultation.date <= today)))
+                        $("#leadstable").append('<tr' + ' id="' + doc.data().phone + '"> <td>' + consultation.with +
+                            '</td><td>' + personal_data + '</td><td>' +
+                            consultation_details + '</td><td>' + amount_to_be_collected + '</td><td>' +
+                            (pcos_quiz_data || 'NA') + '</td><td>' + medical_data + '</td><td>'
+                            + (notes || 'None') + '</td><td>' +
+                            '<select class="form-control" id="customselect3"><option value="0">Consultation Scheduled</option><option value="1">No Show</option><option value="2">Consultation Done</option><option value="3">Reschedule</option></select>' + '</td></tr>')
+                });
+            });
+        })
+    </script>
+
+    <!-- JQuery & Javascript To Show PopUp On Selecting "Consultation Done" In Drop Down Select-->
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).on('change', '#customselect3', function () {
+
+            //Store the Lead ID in a global variable
+            window.customerID = $(this).parent().parent().attr('id');
+
+            if ($(this).val() == 1) { //No Show
+                //Change status to Not Contacted & update consultation.notes with "No show"
+                var leadRef = firebase.firestore().collection('leads').doc(window.customerID);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        var consultation = doc.data().consultation;
+                        consultation.notes = "No show in last scheduled consultation";
+                        leadRef.update({ status: "Not Contacted" });
+                        leadRef.update({ consultation: consultation });
+                        $(this).parent().parent().attr('class', 'hide');
+                    }
+                });
+            }
+            else if ($(this).val() == 2) { //Consultation Done
+                $("#ConsultationPopUp").modal('show');
+            }
+            else if ($(this).val() == 3) { //Reschedule
+                $("#ReschedulePopUp").modal('show');
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#reschedule_button").click(function () {
+                var phone = window.customerID;
+
+                var new_date = document.getElementById("new-consultation-date").value;
+                var new_time = document.getElementById("new-consultation-time").value;
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        var consultation = doc.data().consultation;
+                        consultation.date = new_date;
+                        consultation.time = new_time;
+
+                        leadRef.update({ consultation: consultation });
+                    }
+                });
+                $("#ReschedulePopUp").modal('hide');
+                document.getElementById(phone).style.display = 'none';
+            })
+        })
+    </script>
+
+    <script>
+        const myForm = document.getElementById('consultationdone');
+
+        myForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const searchParams = new URLSearchParams();
+
+            for (const pair of formData) {
+                searchParams.append(pair[0], pair[1]);
+            }
+
+            var phone = window.customerID;
+
+            var new_recommendations = document.getElementById("recommendations").value;
+            var new_consultation_notes = document.getElementById("consultation-notes").value;
+
+            //Get medication details
+            var new_medication = [];
+            var medication_details = {};
+
+            if (document.getElementById('medicine1').value) {
+                medication_details.medicine = document.getElementById('medicine1').value;
+                medication_details.amount = document.getElementById('amount1').value;
+                medication_details.frequency = document.getElementById('frequency1').value;
+                medication_details.othernotes = document.getElementById('othernotes1').value;
+                new_medication.push(medication_details);
+                medication_details = {};
+            }
+
+            if (document.getElementById('medicine2').value) {
+                medication_details.medicine = document.getElementById('medicine2').value;
+                medication_details.amount = document.getElementById('amount2').value;
+                medication_details.frequency = document.getElementById('frequency2').value;
+                medication_details.othernotes = document.getElementById('othernotes2').value;
+                new_medication.push(medication_details);
+                medication_details = {};
+            }
+
+            if (document.getElementById('medicine3').value) {
+                medication_details.medicine = document.getElementById('medicine3').value;
+                medication_details.amount = document.getElementById('amount3').value;
+                medication_details.frequency = document.getElementById('frequency3').value;
+                medication_details.othernotes = document.getElementById('othernotes3').value;
+                new_medication.push(medication_details);
+                medication_details = {};
+            }
+
+            if (document.getElementById('medicine4').value) {
+                medication_details.medicine = document.getElementById('medicine4').value;
+                medication_details.amount = document.getElementById('amount4').value;
+                medication_details.frequency = document.getElementById('frequency4').value;
+                medication_details.othernotes = document.getElementById('othernotes4').value;
+                new_medication.push(medication_details);
+                medication_details = {};
+            }
+
+            if (document.getElementById('medicine5').value) {
+                medication_details.medicine = document.getElementById('medicine5').value;
+                medication_details.amount = document.getElementById('amount5').value;
+                medication_details.frequency = document.getElementById('frequency5').value;
+                medication_details.othernotes = document.getElementById('othernotes5').value;
+                new_medication.push(medication_details);
+                medication_details = {};
+            }
+
+            //Now go to the corresponding Lead and update its status to Done
+            var leadRef = firebase.firestore().collection('leads').doc(phone);
+            leadRef.get().then(doc => {
+                if (doc.exists) {
+                    var new_consultation = (doc.data().consultation || {});
+                    new_consultation.recommendations = new_recommendations;
+                    new_consultation.notes = new_consultation_notes;
+
+                    new_consultation.medication = new_medication;
+
+                    //Update date of consultation
+                    if (!new_consultation.date) {
+                        var today = new Date();
+                        var dd = today.getDate();
+                        var mm = today.getMonth() + 1; //January is 0!
+                        var yyyy = today.getFullYear();
+                        if (dd < 10) {
+                            dd = '0' + dd;
+                        }
+                        if (mm < 10) {
+                            mm = '0' + mm;
+                        }
+                        today = yyyy + '-' + mm + '-' + dd;
+                        new_consultation.date = today;
+                    }
+
+                    leadRef.update({ status: "Consultation Done" });
+                    leadRef.update({ consultation: new_consultation });
+
+
+                    fetch('/send_consultation_done_email', {
+                        method: 'post',
+                        body: searchParams
+                    }).then(function (response) {
+                        if (response.status == "200") {
+                            $("#ConsultationPopUp").modal('hide');
+                            document.getElementById(phone).style.display = 'none';
+                            alert("Prescription sent Successfully");
+                        }
+                        return response.text();
+                    }).then(function (text) {
+                        console.log(text);
+                    }).catch(function (error) {
+                        console.error(error);
+                    })
+                }
+            });
+        })
+    </script>
+
+</body>
+</html>

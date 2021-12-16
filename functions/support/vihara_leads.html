@@ -1,0 +1,291 @@
+﻿<html>
+<head>
+    <title>  </title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta charset="utf-8" />
+    <title>Manage Vihara Leads</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label for="date" class="col-form-label">Select Date</label>
+            <input type="date" name="date" class="form-control" id="date">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="leadsTable">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Trainer</th>
+                    <th>Format</th>
+                    <th>Session Time</th>
+                    <th>Action</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function updateTables() {
+            var today = new Date(document.getElementById("date").value);
+            today = changeTimeStampToString(today);
+
+            var coachRef = firebase.firestore().collection("coaches");
+            coachRef.where('coach_type', '==', 'Vihara')
+                .get().then(snapshot => {
+                    if (snapshot.empty) {
+                    }
+                    snapshot.forEach(doc => {
+                        for (var i = 0; i < doc.data().schedule.length; i++) {
+                            var callDate = changeTimeStampToString(doc.data().schedule[i].callDate.toDate());
+
+                            if (callDate == today) {
+                                var coach = doc.data().schedule[i].coach;
+                                var ID = doc.data().schedule[i].patientID + "," + coach + "," + today;
+                                var classType = doc.data().schedule[i].classType;
+                                var workout_format = doc.data().schedule[i].workout_format;
+                                appendRowString("#leadsTable", today, ID, doc.data().schedule[i].patientID, classType, coach, workout_format, doc.data().schedule[i].callDate.toDate(), _appendRowString);
+                            }
+                        }
+                    })
+                })
+        }
+    </script>
+
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#date").change(function (evt) {
+                updateTables();
+            })
+        })
+    </script>
+
+    <script>
+        function changeTimeStampToString(today) {
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+            return today;
+        }
+    </script>
+
+    <script>
+        function appendRowString(tableID, date, ID, phone, classType, coach, workout_format, callDate, callback) {
+            if (classType == 'Demo') {
+                var leadRef = firebase.firestore().collection("leads");
+                leadRef.where('phone', '==', phone)
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+                        snapshot.forEach(doc => {
+                            callback(tableID, date, ID, doc.data().name, phone, classType, coach, workout_format, callDate);
+                        })
+                    })
+            }
+            else {
+                var userRef = firebase.firestore().collection("users");
+                userRef.where('phone', '==', phone)
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+                        snapshot.forEach(doc => {
+                            callback(tableID, date, ID, doc.data().user_name, phone, classType, coach, workout_format, callDate);
+                        })
+                    })
+            }
+        }
+    </script>
+
+    <script>
+        var key = "";
+        $(document).on('change', '#rescheduledropdown', function () {
+
+            window.customerID = $(this).parent().parent().attr('id');
+            key = window.customerID;
+
+            if ($(this).val() == 1) {
+                $("#ReschedulePopUp").modal('show');
+                var coachRef = firebase.firestore().collection("coaches");
+                var allCoaches = coachRef.get().then(snapshot => {
+                    if (snapshot.empty) {
+                    }
+
+                    snapshot.forEach(doc => {
+                        if (doc.data().coach_type == 'Vihara') {
+                            $("#fc").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                        }
+                    });
+                })
+
+            }
+
+
+        });
+    </script>
+
+    <!-- <script src="users.js"></script> -->
+    <script>
+        function _appendRowString(tableID, date, ID, leadName, phone, classType, coach, workout_format, callDate) {
+            $(tableID).append('<tr' + ' id="' + ID + '"> <td>' + date + '</td><td>' +
+                leadName + '</td><td>' + '<p><a href="https://api.whatsapp.com/send?phone=+91' + phone + '&" target="_blank">' + phone + '</a></p>' + '</td><td>' + coach + '</td><td>' + workout_format + '</td><td>' + callDate.getHours() + '-' + (parseInt(callDate.getHours()) + 1) + '</td><td>' + '<select class="form-control" id="rescheduledropdown"><option value="" disabled selected>Select Action</option><option value="1">Reschedule this session</option><option value="2">Reschedule all sessions</option><option value="3">Schedule new sessions</option></select>' + '<td></tr> ');
+        }
+    </script>
+
+    <script>
+        function getWorkoutFormat(coach, date, new_items) {
+            var coachRef = firebase.firestore().collection('coaches').doc(coach);
+            coachRef.get().then(doc => {
+                if (doc.exists) {
+                    new_items.new_workout_format = doc.data().availability[date.getDay()].format;
+                }
+            })
+        }
+    </script>
+
+    <!-- Script For Rescheduling One Session-->
+    <script>
+        $(document).ready(function () {
+            $("#reschedule_one").click(function () {
+                var new_items = {
+                    new_workout_format: ""
+                };
+                new_items.new_date = new Date(document.getElementById("reschedule_date").value);
+                new_items.new_coach = document.getElementById("fc").value;
+                var ID = window.customerID;
+                /*Now we need to relevant bookings in the lead doc & in the coach doc.
+                         * For the lead doc, we'll need the lead's phone and then we need to find the chosen slot
+                         * in the lead's vihara_data using the coach name. There, we update the array element.
+                        * For the coach, we need the coach's name. Then in the coach's schedule, we need to
+                        * find the entry matching the patientID. There, we update the array element */
+                var res = ID.split(",");
+                var phone = res[0];
+                var old_coach = res[1];
+                var old_date = res[2];
+
+                getWorkoutFormat(new_items.new_coach, new_items.new_date, new_items);
+
+
+                //Lead first
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        for (var i = 0; i < doc.data().vihara_data.workoutCallDates.length; i++) {
+                            var _vihara_data = doc.data().vihara_data;
+
+                            //Compare stores coach with the coach from the table
+                            if (_vihara_data.workoutCallDates[i].coach == old_coach) {
+
+                                if (old_date == changeTimeStampToString(_vihara_data.workoutCallDates[i].callDate.toDate())) {
+                                    _vihara_data.workoutCallDates[i].callDate = new_items.new_date;
+                                    _vihara_data.workoutCallDates[i].coach = new_items.new_coach;
+                                    _vihara_data.workoutCallDates[i].workout_format = new_items.new_workout_format;
+                                    leadRef.update({ vihara_data: _vihara_data });
+
+                                    //Then old Coach
+                                    var coachRef_1 = firebase.firestore().collection('coaches').doc(old_coach);
+                                    coachRef_1.get().then(doc => {
+                                        if (doc.exists) {
+                                            for (var j = 0; j < doc.data().schedule.length; j++) {
+                                                var _schedule = doc.data().schedule;
+
+                                                if ((old_date == changeTimeStampToString(_schedule[j].callDate.toDate())) && (phone == _schedule[j].patientID)) {
+
+                                                    //First update this array element with the right details
+                                                    _schedule[j].callDate = new_items.new_date;
+                                                    _schedule[j].coach = new_items.new_coach;
+                                                    _schedule[j].workout_format = new_items.new_workout_format;
+                                                    var schedule_obj = _schedule[j];
+
+                                                    //Now push this array element to the new coach's schedule
+                                                    var coachRef_2 = firebase.firestore().collection('coaches').doc(new_items.new_coach);
+                                                    coachRef_2.get().then(doc => {
+                                                        if (doc.exists) {
+                                                            var __schedule = doc.data().schedule;
+                                                            __schedule.push(schedule_obj);
+                                                            coachRef_2.update({ schedule: __schedule });
+                                                        }
+                                                    })
+                                                    //Now delete this array element from the old coach's schedule
+                                                    _schedule.splice(j, 1);
+                                                    coachRef_1.update({ schedule: _schedule });
+
+                                                    //Finally Hide the popup & the row
+                                                    $("#ReschedulePopUp").modal('hide');
+                                                    document.getElementById(window.customerID).style.display = 'none';
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+
+    <div class="modal fade" id="ReschedulePopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Reschedule One Session</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group" id="selectrescheduledate">
+                            <label for="reschedule_date" class="col-form-label">Date</label>
+                            <input type="datetime-local" id="reschedule_date" name="reschedule_date" placeholder="dd-mm-yyyy">
+                        </div>
+                        <div id="selectfc">
+                            <div class="form-group">
+                                <label for="fc" class="col-form-label">Select Vihara Coach</label>
+                                <select id="fc" name="fc" class="form-control">
+                                    FC
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="reschedule_one">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

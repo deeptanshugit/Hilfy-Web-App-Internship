@@ -1,0 +1,39 @@
+﻿<html>
+<head>
+    <title>Add a New User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <form action="/scheduleViharaReminderTest" method="POST">
+        Phone: <input type="number" name="phone" id="phone" required> <br>
+        <br />
+        <input type="submit" value="Submit" id="sub_but">
+    </form>
+    <!--<script>
+        const myForm = document.getElementById('bookconsultation');
+
+        myForm.addEventListener('submit', function (e) {
+            console.log("here");
+            const formData = new FormData(this);
+            const searchParams = new URLSearchParams();
+
+            for (const pair of formData) {
+                searchParams.append(pair[0], pair[1]);
+            }
+            console.log("Search Params: "+searchParams);
+            fetch('/fetchViharaSessions', {
+                method: 'post',
+                body: searchParams
+            }).then(function (response) {
+                console.log("1" + response.text());
+            }).then(function (text) {
+                console.log("2" + text);
+            }).catch(function (error) {
+                console.error("3" + error);
+            })
+        })
+    </script>-->
+</body>
+</html>

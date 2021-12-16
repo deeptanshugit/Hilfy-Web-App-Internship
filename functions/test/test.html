@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>Reschedule Vihara Session</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+</head>
+<body>
+
+    <div class="container ">
+        <form id="myForm">
+
+            <div class="form-group">
+                <label for="name" class="col-form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phoneno" class="col-form-label">Phone</label>
+                <input type="tel" class="form-control" id="phoneno" name="phoneno" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="btnViharaRescheduleSessionFormSubmit" value="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+        </form>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script>
+
+        const myForm = document.getElementById('myForm');
+
+        myForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var name_obj = {
+                name: document.getElementById('name'),
+                phone: document.getElementById('phoneno')
+            }
+            console.log("here");
+
+            var leadRef = firebase.firestore().collection('leads').doc('+0000000000');
+            leadRef.get().then(doc => {
+                if (!doc.exists) {
+                }
+                else {
+                    var _names = [];
+                    if (doc.data().names) {
+                        _names = doc.data().names;
+                    }
+                    _names.push(name_obj);
+                    leadRef.update({ names: _names });
+                }
+            });
+        })
+    </script>
+</body>
+</html>
+

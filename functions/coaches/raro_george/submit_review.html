@@ -1,0 +1,77 @@
+﻿<html>
+<head>
+    <title>Submit a Review</title>
+    <meta charset="utf-8" />
+    <style media="screen">
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #uploader {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 50%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Upload screenshot of a Review</h2>
+    <progress value="0" max="100" id="uploader">0%</progress>
+    <input type="file" value="upload" id="fileButton" />
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+
+        //Get Elements
+        var uploader = document.getElementById('uploader');
+        var fileButton = document.getElementById('fileButton');
+
+        //Listen for file selection
+        fileButton.addEventListener('change', function (e) {
+            //Get File
+            var file = e.target.files[0];
+
+            //Create a Storage Ref
+            var storageRef = firebase.storage().ref('george_reviews/' + file.name);
+
+            //Upload the file
+            var task=storageRef.put(file);
+
+            //Update Progress Bar
+            task.on('state_changed',
+                function progress(snapshot) {
+                    var percentage = (snapshot.bytesTransferred /
+                        snapshot.totalBytes) * 100;
+                    uploader.value = percentage;
+                },
+                function error(err) { },
+                function complete() { }
+            );
+
+            //Mail the Admin
+
+        })
+    </script>
+
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<head>
+    <title>Post-Consultations | Modern Monk</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300.400.500.700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="table-responsive">
+            <h1>Open Post-Consultations</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="leadstable">
+                <tr>
+                    <th>Personal Details</th>
+                    <th style="padding-right: 132px;">PCOS Quiz Data</th>
+                    <th>Consultation Details</th>
+                    <th>Lifestyle Recommendations</th>
+                    <th>Medicine Prescribed</th>
+                    <th style="padding-right: 180px;">Notes</th>
+                    <th style="padding-right: 105px;">Sales Rep</th>
+                    <th style="padding-right: 122px;">Status </th>
+                </tr>
+            </table>
+            <h3 id="demo">  </h3>
+            <br>
+            <!-- <button onclick="setTimeout(myFunction,3000)">Try it</button> -->
+            <body onload="setTimeout(CountRows,3000)">
+            </body>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function CountRows() {
+            var totalRowCount = 0;
+            var rowCount = 0;
+            var table = document.getElementById("leadstable");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                totalRowCount++;
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount++;
+                }
+            }
+            var message = "Total Row Count (with header): " + totalRowCount;
+            message += "\nRow Count (without header): " + rowCount;
+            document.getElementById("demo").innerHTML = "Total " + rowCount + " Rows in the table.";
+
+        }
+    </script>
+
+    <!-- HTML For Convert Lead POP UP FORM-->
+    <div class="modal fade" id="ConvertLeadPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Convert Lead</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="myForm">
+                        <div class="form-group">
+                            <label for="service" class="col-form-label">Select Service</label>
+                            <select name="service" id="service" class="form-control">
+                                <option value="Weight Loss">Weight Loss</option>
+                                <option value="PCOS">PCOS</option>
+                                <option value="Fitness">Fitness</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="selectplan">
+                            <label for="plan" class="col-form-label">Select Plan</label>
+                            <select id="plan" name="plan" class="form-control">
+                                PLAN
+                            </select>
+                        </div>
+
+                        <div id="selectnc">
+                            <div class="form-group">
+                                <label for="nc" class="col-form-label">Select Achara Coach</label>
+                                <select id="nc" name="nc" class="form-control">
+                                    NC
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="selectfc">
+                            <div class="form-group">
+                                <label for="fc" class="col-form-label">Vihara Service Included?</label>
+                                <select id="fc" name="fc" class="form-control">
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="selectvc">
+                            <div class="form-group">
+                                <label for="vc" class="col-form-label">Select Vichara Coach</label>
+                                <select id="vc" name="vc" class="form-control">
+                                    VC
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="sectionworkoutformats">
+                            <label for="workoutformats" class="col-form-label">Format</label>
+                            <select class="form-control" onchange="getMultipleSelected(this.id)" id="workoutformats" name="workoutformats[]" multiple="multiple">
+                                <option value="Yoga">Yoga</option>
+                                <option value="Functional Training">Functional Training</option>
+                                <option value="Zumba">Zumba</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="sectionpreferredslot">
+                            <label for="preferred_slot" class="col-form-label">Preferred Slot</label>
+                            <select class="form-control" id="preferred_slot" name="preferred_slot">
+                                <option>06-07</option>
+                                <option>07-08</option>
+                                <option>08-09</option>
+                                <option>11-12</option>
+                                <option>16-17</option>
+                                <option>17-18</option>
+                                <option>18-19</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="sectionstartdate">
+                            <label for="start_date" class="col-form-label">Start Date</label>
+                            <input type="date" name="start_date" class="form-control" id="start_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration_mul" class="col-form-label">Duration (in months)</label>
+                            <input type="number" name="duration_mul" class="form-control" id="duration_mul" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount" class="col-form-label">Amount Paid</label>
+                            <input type="number" name="amount" class="form-control" id="amount" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="convertleadbutton" class="btn btn-primary">Add Customer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML For  PopUp for adding remarks on "TrashLead"-->
+    <div class="modal fade" id="TrashPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Notes For Trash Lead</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="add-remarks" class="col-form-label">Add Remarks</label>
+                            <input type="text" name="add-remarks" class="form-control" id="add-remarks">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="remarks_button">Add Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const myForm = document.getElementById('myForm');
+
+        myForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const searchParams = new URLSearchParams();
+
+            console.log("FC is: " + document.getElementById('fc'));
+            /*This step adds:
+            * Plan
+            * NC, FC, VC
+            * Start Date
+            * Duration
+            * Amount Paid
+            * to the searchParams*/
+            for (const pair of formData) {
+                searchParams.append(pair[0], pair[1]);
+            }
+
+            /*
+             * Now add more customer details:
+             * PCOS/Prakriti Quiz Details
+             * added_time
+             * birthday
+             * ailments
+             * consultation details
+             * name
+             * phone
+             * email ID
+             * height
+             * Pre & Post Consultation Notes
+             * source
+             * weight
+             * */
+            var phone = window.customerID;
+            var workout_formats = workoutformatsvalue;
+            var preferred_slot = document.getElementById("preferred_slot").value;
+
+            var leadRef = firebase.firestore().collection('leads').doc(phone);
+            leadRef.get().then(doc => {
+                if (doc.exists) {
+                    searchParams.append("phone", phone);
+                    if (doc.data().pcos_quiz_data)
+                        searchParams.append("pcos_quiz_data", JSON.stringify(doc.data().pcos_quiz_data));
+                    if (doc.data().prakriti_quiz_data)
+                        searchParams.append("prakriti_quiz_data", JSON.stringify(doc.data().prakriti_quiz_data));
+                    searchParams.append("lead_added_time", doc.data().added_time);
+                    searchParams.append("birthday", doc.data().birthday);
+                    searchParams.append("ailments", doc.data().ailments);
+                    if (doc.data().consultation)
+                        searchParams.append("consultation_details", JSON.stringify(doc.data().consultation));
+                    searchParams.append("user_name", doc.data().name);
+                    if (doc.data().email)
+                        searchParams.append("email", doc.data().email);
+                    if (doc.data().height)
+                        searchParams.append("height", doc.data().height);
+
+                    var notes = "<b>Pre-Consultation</b>: ";
+                    notes += (doc.data().pre_consultation_notes || "None.");
+                    if (doc.data().consultation) {
+                        notes += " <b>Consultation</b>: ";
+                        notes += (doc.data().consultation.notes || "None.");
+                        notes += " <b> Post Consultation</b>: ";
+                        notes += (doc.data().consultation.post_consultation_notes || "None.");
+                    }
+
+                    var sales_details = {
+                        pre_consultant: doc.data().pre_consultant,
+                        post_consultant: doc.data().post_consultant,
+                        sales_notes: notes
+                    }
+                    searchParams.append("sales_details", JSON.stringify(sales_details));
+                    searchParams.append("lead_source", doc.data().source);
+                    searchParams.append("weight", doc.data().weight);
+                    searchParams.append("funnel", doc.data().funnel);
+                    searchParams.append("workout_formats", workout_formats);
+
+                    fetch('/addUser', {
+                        method: 'post',
+                        body: searchParams
+                    }).then(function (response) {
+                        if (response.status == "200") {
+                            $("#ConvertLeadPopUp").modal('hide');
+                            document.getElementById(phone).style.display = 'none';
+                            alert("Lead Converted");
+
+                            //Delete the Lead
+                            //var leadRef = firebase.firestore().collection('leads').doc(window.customerID).delete();
+                        }
+                        return response.text();
+                    }).then(function (text) {
+                        console.log(text);
+                    }).catch(function (error) {
+                        console.error(error);
+                    })
+                }
+            });
+        });
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--<script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            console.log("Test initiated");
+                    fetch('/testURL', {
+                        method: 'post',
+                    }).then(function (response) {
+                        console.log(response.text());
+                    }).then(function (text) {
+                        console.log(text);
+                    }).catch(function (error) {
+                        console.error(error);
+                    })
+        })
+    </script>-->
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+
+            var leadRef = firebase.firestore().collection("leads");
+            leadRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+                snapshot.forEach(doc => {
+                    if (doc.data().status == 'Consultation Done' || doc.data().status == 'Contacted For Sales') {
+                        var consultation = {};
+                        if (doc.data().consultation) {
+                            consultation = doc.data().consultation;
+                        }
+
+                        var notes = "<b>Pre-Consultation</b> ";
+                        notes += "(" + (doc.data().pre_consultant || "NA") + "): "
+                        notes += (doc.data().pre_consultation_notes || "None.");
+                        if (doc.data().consultation) {
+                            notes += " <b>Consultation</b>: ";
+                            notes += (consultation.notes || "None.");
+                            notes += " <b> Post Consultation</b>: ";
+                            notes += (consultation.post_consultation_notes || "None.");
+                        }
+
+                        //Fill up PCOS Quiz Data
+                        if (doc.data().pcos_quiz_data) {
+                            var pcos_quiz_data = "Has ";
+                            if (doc.data().pcos_quiz_data.acne == "Yes")
+                                pcos_quiz_data += "Acne, ";
+                            if (doc.data().pcos_quiz_data.depression == "Yes")
+                                pcos_quiz_data += "Depression, ";
+                            if (doc.data().pcos_quiz_data.difficulty_losing_weight == "Yes")
+                                pcos_quiz_data += "Difficulty Losing Weight, ";
+                            if (doc.data().pcos_quiz_data.facial_hair == "Yes")
+                                pcos_quiz_data += "Facial Hair, ";
+                            if (doc.data().pcos_quiz_data.infertility == "Yes")
+                                pcos_quiz_data += "History of Infertility, ";
+                            if (doc.data().pcos_quiz_data.irregular_cycle == "Yes")
+                                pcos_quiz_data += "Irregular Cycles";
+                            pcos_quiz_data += " and the most concerning symptom is " + doc.data().pcos_quiz_data.most_concerning_symptom;
+                            pcos_quiz_data += ". Her Risk score is " + "<b>" + doc.data().pcos_quiz_data.pcos_risk + "</b>";
+                        }
+
+                        var personal_data = "<b>Name</b>: " + doc.data().name + " <b>Email</b>: "
+                            + doc.data().email + "<b> Phone</b>: " +
+                            '<p><a href = "https://api.whatsapp.com/send?phone=+91' + doc.data().phone +
+                            '&" target="_blank">' + doc.data().phone + '</a></p> ' + "<b> Source</b>: " + doc.data().source
+                            + " <b>Ailments</b>: " + doc.data().ailments;
+
+                        var consultation_details = "with " + (consultation.with || 'NA') + " on " + (consultation.date || 'NA');
+
+                        var medication = "";
+                        var i = 0;
+                        if (consultation.medication) {
+                            while (i < consultation.medication.length) {
+                                medication += (i + 1) + ") " + consultation.medication[i].medicine + ", " + consultation.medication[i].amount + ". ";
+                                i++;
+                            }
+                        }
+
+                        if (doc.data().post_consultant) {
+                            var post_consultant1 = doc.data().post_consultant;
+                        }
+
+
+                        $("#leadstable").append('<tr' + ' id="' + doc.data().phone + '"> <td>' + personal_data +
+                            '</td><td>' + (pcos_quiz_data || 'NA') + '</td><td>' + consultation_details +
+                            '</td><td>' + (consultation.recommendations || 'NA') + '</td><td>' +
+                            (medication || 'NA') + '</td><td>' + notes + '</td><td>' + '<select class="form-control" id="salesrepselect"><option value="" disabled selected>' + (post_consultant1 || "NA") + '</option><option value="Anjali Thakur">Anjali Thakur</option><option value="Nikita Barve">Nikita Barve</option></select>' + '</td><td>' +
+                            '<select class="form-control" id="customselect3" disabled><option value="" disabled selected>' + doc.data().status + '</option><option value="0">Not Contacted</option><option value="1">Contacted</option><option value="4">Followed-Up</option><option value="2">Converted</option><option value="3">Trash Lead</option></select>' + '</td></tr>')
+                    }
+                });
+            });
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $('#selectnc').show();
+            $('#selectfc').show();
+            $('#selectvc').hide();
+            $('#sectionpreferredslot').hide();
+            $('#sectionworkoutformats').hide();
+            $('#selectplan').hide();
+
+            $("#service").change(function (evt) {
+                updatePlans();
+
+                //Hide NC, VC & FC based on service chosen
+                var service = document.getElementById("service").value;
+
+                switch (service) {
+
+
+                    case 'Weight Loss':
+                        $('#selectnc').show();
+                        $('#selectfc').show();
+                        // $('#selectvc').show();
+                        $('#sectionpreferredslot').hide();
+                        $('#sectionworkoutformats').hide();
+                        $('#selectplan').hide();
+                        break;
+                        case 'PCOS':
+                        $('#selectnc').show();
+                        $('#selectfc').show();
+                        // $('#selectvc').hide();
+                        $('#sectionstartdate').show();
+                        $('#sectionpreferredslot').show();
+                        $('#sectionworkoutformats').show();
+                        $('#selectplan').hide();
+                        break;
+                        case 'Fitness':
+                        $('#selectnc').hide();
+                        $('#selectfc').hide();
+                        // $('#selectvc').hide();
+                        $('#sectionstartdate').show();
+                        $('#sectionpreferredslot').show();
+                        $('#sectionworkoutformats').show();
+                        $('#selectplan').hide();
+                        break;
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function updatePlans() {
+            //Remove all options
+            $("#plan option").remove();
+
+            //Add new options
+            var planRef = firebase.firestore().collection("plans");
+            var allPlans = planRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var service = document.getElementById("service").value;
+                snapshot.forEach(doc => {
+                    if (doc.data().service == service) {
+                        $("#plan").append(new Option(doc.data().plan_name, doc.data().plan_name));
+                    }
+                });
+            }).catch(err => {
+                console.log("Error: ", err);
+            })
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            updatePlans();
+
+            //Add none as option
+            $("#vc").append(new Option("none", "none"));
+
+            var coachRef = firebase.firestore().collection("coaches");
+            var allCoaches = coachRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    if (doc.data().coach_type == 'Achara') {
+                        $("#nc").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                    }
+                    else if (doc.data().coach_type == 'Vichara') {
+                        $("#vc").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                    }
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <!-- JQuery & Javascript To Show PopUp On Selecting Book Consultation In Drop Down Select-->
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).on('change', '#customselect3', function () {
+
+            //Store the Lead ID in a global variable
+            window.customerID = $(this).parent().parent().attr('id');
+
+            if ($(this).val() == 2) {
+                $("#ConvertLeadPopUp").modal('show');
+            }
+            else if ($(this).val() == 3) {
+                $("#TrashPopUp").modal('show');
+            }
+
+            else if ($(this).val() == 1) {
+                $("#ContactedPostConsultation").modal('show');
+            }
+
+            else if ($(this).val() == 4) {
+                $("#FollowedUpConsultation").modal('show');
+            }
+        });
+    </script>
+
+    <!-- Script For Updating Status From "Trash Lead" (Add Remarks) Popup-->
+    <script>
+        $(document).ready(function () {
+            $("#remarks_button").click(function () {
+                var phone = window.customerID;
+
+                var pre_consultation_notes = document.getElementById("add-remarks").value;
+
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        leadRef.update({ status: "Trash Lead" });
+                        leadRef.update({ pre_consultation_notes: pre_consultation_notes });
+                        leadRef.update({ post_consultant: post_consultant });
+                    }
+                });
+                $("#TrashPopUp").modal('hide');
+                document.getElementById(phone).style.display = 'none';
+            })
+        })
+    </script>
+
+    <!-- HTML For  PopUp for adding Post-Consultation remarks on "Contacted For Sales"-->
+    <div class="modal fade" id="ContactedPostConsultation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Notes For Post-Consultation</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="add-postconsultationremarks" class="col-form-label">Add Remarks</label>
+                            <input type="text" name="add-postconsultationremarks" class="form-control" id="add-postconsultationremarks">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="postconsultationremarks_button">Add Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML For Popup For Overwriting Post Consultation Notes With Followed-Up Notes-->
+    <div class="modal fade" id="FollowedUpConsultation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Notes For Post-Consultation</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="add-followedupnotes" class="col-form-label">Add Remarks</label>
+                            <input type="text" name="add-followedupnotes" class="form-control" id="add-followedupnotes">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="followedupnotes_button">Add Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#postconsultationremarks_button").click(function () {
+                var phone = window.customerID;
+
+                var post_consultation_notes = document.getElementById("add-postconsultationremarks").value;
+
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        leadRef.update({ status: "Contacted For Sales" });
+                        leadRef.update({ post_consultation_notes: post_consultation_notes });
+                        leadRef.update({ post_consultant: post_consultant });
+                    }
+                });
+                $("#ContactedPostConsultation").modal('hide');
+                document.getElementById(phone).style.display = 'none';
+            })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#followedupnotes_button").click(function () {
+                var phone = window.customerID;
+
+                var followedupnotes = document.getElementById("add-followedupnotes").value;
+
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        var notes = doc.data().post_consultation_notes;
+                        notes += followedupnotes;
+                        leadRef.update({ post_consultation_notes: notes });
+                        leadRef.update({ status: "Followed-up" });
+                        leadRef.update({ post_consultant: post_consultant });
+                    }
+                });
+                $("#FollowedUpConsultation").modal('hide');
+                document.getElementById(phone).style.display = 'none';
+            })
+        })
+    </script>
+
+    <!-- Script For Unlocking The Status Dropdown On Selection Of Sales Rep DropDown-->
+    <script>
+        var post_consultant = "";
+        $(document).on('change', '#salesrepselect', function () {
+
+            var post_consultatant = $(this).children("option:selected").val();
+
+            window.customerID = $(this).parent().parent().attr('id');
+
+
+            var currentRow = document.getElementById(window.customerID);
+
+            var cells = currentRow.getElementsByTagName("td");
+            if (cells.length != 0) {
+                var lastCell = cells[cells.length - 1];
+
+                var dropdown = lastCell.getElementsByTagName("select");
+                if (dropdown.length != 0) {
+                    var myDropdown = dropdown[dropdown.length - 1];
+                    $(myDropdown).prop("disabled", false);
+                    post_consultant = $(this).find("option:selected").text();
+                }
+            }
+
+        });
+    </script>
+
+    <!-- Script For Hiding Select Boxes-->
+
+    <script>
+        $(document).on('change', '#service', function () {
+
+           $('select[name="fc"]').first().val("No")
+            $('#sectionpreferredslot').hide();
+            $('#sectionworkoutformats').hide();
+
+            if ($('#service').val() == 'Fitness') {
+           $('#sectionpreferredslot').show();
+           $('#sectionworkoutformats').show();
+            }
+
+});
+
+
+// $(document).ready(function () {
+
+//     if ($('#fc').val() == 'Yes') {
+//         $('#sectionpreferredslot').show();
+//         $('#sectionworkoutformats').show();
+//             }
+
+//             else if ($('#fc').val() == 'No') {
+//         $('#sectionpreferredslot').hide();
+//         $('#sectionworkoutformats').hide();
+//             }
+
+// })
+
+    </script>
+    <!-- Script For Hiding Workout Format On Selection Of Vihara Service Included Yes/No-->
+    <script>
+        $(document).ready(function () {
+            $('#sectionworkoutformats').show();
+            $('#sectionpreferredslot').show();
+
+            $('#fc').change(function () {
+                if ($('#fc option:selected').text() == "Yes") {
+                    $('#sectionpreferredslot').show();
+                    $('#sectionworkoutformats').show();
+                }
+
+                else if($('#fc option:selected').text() == "No"){
+                    $('#sectionpreferredslot').hide();
+                    $('#sectionworkoutformats').hide();
+                }
+
+            });
+        });
+    </script>
+
+    <!-- Function To Get The Multiple Selected Values -->
+    <script>
+        var workoutformatsvalue = "";
+        function getMultipleSelected(fieldID) {
+
+            // fieldID is id set on select field
+            var elements = document.getElementById(fieldID).childNodes;
+
+            var selectedKeyValue = {};
+
+            var arrayOfSelecedIDs = [];
+
+            // loop over option values
+            for (i = 0; i < elements.length; i++) {
+
+                if (elements[i].selected) {
+                    selectedKeyValue[elements[i].value] = elements[i].textContent;
+                    arrayOfSelecedIDs.push(elements[i].value)
+                }
+
+            }
+            workoutformatsvalue = arrayOfSelecedIDs;
+            return arrayOfSelecedIDs;
+        }
+    </script>
+</body>
+</html>

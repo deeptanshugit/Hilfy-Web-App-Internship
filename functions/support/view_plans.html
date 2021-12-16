@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>All Plans | Modern Monk</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="users.js"></script> -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var planRef = firebase.firestore().collection("plans");
+            var allUsers = planRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var count = 1;
+                snapshot.forEach(doc => {
+                    $("#plans_basic_details").append('<tr><td>' + count + '</td><td>' +
+                        doc.data().plan_name + '</td><td>' + doc.data().duration +
+                        '</td><td>' + doc.data().nc_calls_count +
+                        '</td><td>' + doc.data().nc_plans_count + '</td><td>' +
+                        doc.data().fc_calls_count + '</td><td>' +
+                        doc.data().fc_plans_count + '</td><td>' +
+                        doc.data().achara_coach_calls_count + '</td><td>' +
+                        doc.data().achara_coach_plans_count + '</td><td>' +
+                        doc.data().vichara_coach_calls_count + '</td><td>' +
+                        doc.data().vichara_coach_plans_count + '</td></tr>');
+                    count++;
+
+                    count = 0;
+                    $("#plans_points").append('<tr><td>' + count + '</td><td>' +
+                        doc.data().plan_name + '</td><td>' +
+                        doc.data().points_nc + '</td><td>' +
+                        doc.data().points_fc + '</td><td>' +
+                        doc.data().points_achara_coach + '</td><td>' +
+                        doc.data().points_vichara_coach + '</td><td>' +
+                        doc.data().extra_points + '</td><td>' +
+                        doc.data().five_star_points + '</td></tr>');
+                    count++;
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <h2>Plans - Basic Details</h2>
+            <br />
+            <table class="table table-bordered table-striped" id="plans_basic_details">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Name</th>
+                    <th>Duration (in days)</th>
+                    <th>Ahara Coach Calls</th>
+                    <th>Ahara Coach Plans</th>
+                    <th>Vihara Coach Calls</th>
+                    <th>Vihara Coach Plans</th>
+                    <th>Achara Coach Calls</th>
+                    <th>Achara Coach Plans</th>
+                    <th>Vichara Coach Calls</th>
+                    <th>Vichara Coach Plans</th>
+                </tr>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <h2>Plans - Points to Coaches</h2>
+            <br />
+            <table class="table table-bordered table-striped" id="plans_points">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Name</th>
+                    <th>Points - Ahara Coach</th>
+                    <th>Points - Vihara Coach</th>
+                    <th>Points - Achara Coach</th>
+                    <th>Points - Vichara Coach</th>
+                    <th>Extra Points per Call</th>
+                    <th>Points per 5-star rating</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

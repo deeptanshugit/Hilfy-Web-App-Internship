@@ -1,0 +1,118 @@
+﻿<html>
+<head>
+    <title>Sakhi Pairing</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <form action="/sakhi_pairing" method="POST">
+        <br />
+        Sakhi 1: <select id="sone" name="sone">
+            SONE
+        </select> <t></t><br />
+        <div>
+            Phone: <text id="phone1">
+                PHONE
+                <t></t><br />
+        </div>
+        <input type="hidden" name="phone1" id="phone_hidden1" />
+        <br />
+        Sakhi 2: <select id="stwo" name="stwo">
+            STWO
+        </select> <t></t><br />
+        <div>
+            Phone: <text id="phone2">
+                PHONE
+                <t></t><br />
+        </div>
+        <input type="hidden" name="phone2" id="phone_hidden2" />
+        <input type="submit" value="Submit">
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var userRef = firebase.firestore().collection("users");
+            var allUsers = userRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var count = 1;
+                snapshot.forEach(doc => {
+                        $("#sone").append(new Option(doc.data().user_name, doc.data().user_name));
+                        $("#stwo").append(new Option(doc.data().user_name, doc.data().user_name));
+                        if (count == 1) {
+                            $('#phone1').html(doc.data().phone);
+                            document.getElementById("phone_hidden1").value = document.getElementById("phone1").innerHTML;
+
+                            $('#phone2').html(doc.data().phone);
+                            document.getElementById("phone_hidden2").value = document.getElementById("phone2").innerHTML;
+                        }
+                        count++;
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#sone").change(function (evt) {
+
+                var userRef = firebase.firestore().collection("users");
+                var allUsers = userRef.where('user_name', '==', $("#sone").val())
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+
+                        snapshot.forEach(doc => {
+                            $('#phone1').html(doc.data().phone);
+                            document.getElementById("phone_hidden1").value = document.getElementById("phone1").innerHTML;
+                        });
+                    })
+                    .catch(err => {
+                        console.log("Error: ", err);
+                    })
+            })
+
+            $("#stwo").change(function (evt) {
+
+                var userRef = firebase.firestore().collection("users");
+                var allUsers = userRef.where('user_name', '==', $("#stwo").val())
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+
+                        snapshot.forEach(doc => {
+                            $('#phone2').html(doc.data().phone);
+                            document.getElementById("phone_hidden2").value = document.getElementById("phone2").innerHTML;
+                        });
+                    })
+                    .catch(err => {
+                        console.log("Error: ", err);
+                    })
+            })
+        })
+    </script>
+</body>
+</html>

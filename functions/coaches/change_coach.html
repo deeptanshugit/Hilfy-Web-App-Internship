@@ -1,0 +1,77 @@
+﻿<html>
+<head>
+    <title>Change a Coach</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h2>Change a Coach</h2>
+    <form action="/change_coach" method="POST">
+        Choose Old Coach: <select id="oldCoachID" name="oldCoachID">
+            OLDCOACH
+        </select> <t></t><br />
+        <div>
+            Number of patients to shift: <input type="number" name="custCount" required> <br>
+            <t></t>
+        </div>
+        <input type="hidden" name="custCount" id="custCount_hidden" />
+        Choose New Coach: <select id="newCoachID" name="newCoachID">
+            NEWCOACH
+        </select> <t></t><br /> <br />
+        <input type="submit" id="driver" value="Submit" />
+    </form>
+
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var coachRef = firebase.firestore().collection("coaches");
+            var allCoaches = coachRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    $("#oldCoachID").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var coachRef = firebase.firestore().collection("coaches");
+            var allCoaches = coachRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    $("#newCoachID").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿<html>
+<head>
+    <title>Add a New Lead</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <form action="/add_lead" method="POST">
+        <br />
+        Name: <input type="text" name="name"> <br>
+        Phone: <input type="number" name="phone" required> <br>
+        E-mail: <input type="email" name="email"> <br>
+        Source: <select name="source">
+            <option value="Facebook Group">Facebook Group</option>
+            <option value="Referral">Referral</option>
+            <option value="Website">Website</option>
+            <option value="WhatsApp Chat">WhatsApp Chat</option>
+        </select> <br />
+        Interested In: <select name="funnel">
+            <option value="PCOS">PCOS</option>
+            <option value="Vihara">Vihara</option>
+            <option value="Weight Loss">Weight Loss</option>
+        </select> <br />
+        Birthday: <input type="date" name="birthday"> <br>
+        Current Weight (in Kgs): <input type="number" name="weight"> <br>
+        Height: <input type="text" name="height"> <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

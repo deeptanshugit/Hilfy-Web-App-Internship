@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>All Leads | Modern Monk</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="leads.js"></script> -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var leadRef = firebase.firestore().collection("leads");
+            var allleads = leadRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var count = 1;
+                snapshot.forEach(doc => {
+                var added_time = formatTheTime(doc.data().added_time);
+
+                    $("#activeleads").append('<tr><td>' + count + '</td><td>' +
+                        doc.data().name + '</td><td>' + doc.data().phone +
+                        '</td><td>' + doc.data().email +
+                        '</td><td>' + doc.data().source +
+                        '</td><td>' + doc.data().status +
+                        '</td><td>' + added_time +
+                        '</td></tr>');
+                    count++;
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function formatTheTime(time) {
+            if (time) {
+                if (typeof time != "string") {
+                    if (time.toDate()) {
+                        time = time.toDate();
+                    }
+                }
+                time = new Date(time);
+                return time;
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <h1>All Historical leads</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="activeleads">
+                <tr>
+                    <th>S.N.</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th>Added On</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

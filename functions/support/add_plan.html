@@ -1,0 +1,39 @@
+﻿<html>
+<head>
+    <title>Add a New Plan</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h3>Add a new Plan</h3>
+    <form action="/add_plan" method="POST">
+        <div class="modal-content">
+            <div class="modal-body">
+                Name: <input type="text" name="plan_name" required> <br>
+                Duration (in days): <input type="text" name="duration" required> <br> <br>
+                <div class="form-group">
+                    <label for="service_select" class="col-form-label">Select Service</label>
+                    <select name="service" id="service" class="form-control">
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="PCOS">PCOS</option>
+                        <option value="Fitness">Fitness</option>
+                    </select>
+                </div>
+                Number of Vihara Plans: <input type="number" name="fc_plans_count" required> <br>
+                Number of Vihara Coach Calls: <input type="number" name="fc_calls_count" required> <br>
+                Number of Achara Plans: <input type="number" name="achara_plans_count" required> <br>
+                Number of Achara Coach Calls: <input type="number" name="achara_calls_count" required> <br>
+                Number of Vichara Plans: <input type="number" name="vichara_plans_count" required> <br>
+                Number of Vichara Coach Calls: <input type="number" name="vichara_calls_count" required> <br> <br>
+                Points to Ahara Coach: <input type="number" name="points_nc" required> <br>
+                Points to Vihara Coach: <input type="number" name="points_fc" required> <br>
+                Points to Achara Coach: <input type="number" name="points_achara_coach" required> <br>
+                Points to Vichara Coach: <input type="number" name="points_vichara_coach" required> <br>
+                Extra Points per Call: <input type="number" name="extra_points" required> <br>
+                Extra Points for every 5-star rating: <input type="number" name="five_star_points" required> <br>
+                <input type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+</body>
+</html>

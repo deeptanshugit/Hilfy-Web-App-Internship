@@ -1,0 +1,740 @@
+
+<!DOCTYPE html>
+<head>
+    <title>Pre-Consultations | Modern Monk</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300.400.500.700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="table-responsive">
+            <h1>Open Pre-Consultations</h1>
+            <br />
+            <table class="table table-bordered table-striped" id="leadstable">
+                <tr>
+                    <th>Name</th>
+                    <th style="padding-right: 72px;">Email</th>
+                    <th>Phone</th>
+                    <th>Last Interaction on</th>
+                    <th>Source & Funnel</th>
+                    <th style="padding-right: 132px;">Quiz Data</th>
+                    <th>Notes</th>
+                    <th style="padding-right: 105px;">Sales Rep</th>
+                    <th style="padding-right: 90px;">Status </th>
+                </tr>
+            </table>
+            <h3 id="demo">  </h3>
+            <br>
+            <h3 id="demo1"> </h3>
+            <br>
+            <body onload="setTimeout(CountRows,6000);">
+
+
+            </body>
+        </div>
+    </div>
+
+
+
+    <!-- Script For Counting Rows Of The Table-->
+    <script type="text/javascript">
+        function CountRows() {
+            var totalRowCount = 0;
+            var rowCount = 0;
+            var table = document.getElementById("leadstable");
+            var rows = table.getElementsByTagName("tr")
+            for (var i = 0; i < rows.length; i++) {
+                totalRowCount++;
+                if (rows[i].getElementsByTagName("td").length > 0) {
+                    rowCount++;
+                }
+            }
+            var message = "Total Row Count (with header): " + totalRowCount;
+            message += "\nRow Count (without header): " + rowCount;
+            document.getElementById("demo").innerHTML = "Total " + rowCount + " Rows in the table.";
+
+        }
+
+    </script>
+
+    <!-- HTML For Consultation POP UP FORM-->
+    <div class="modal fade" id="ConsultationPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Book Consultation</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookconsultation">
+                        <div class="form-group">
+                            <label for="age" class="col-form-label">Age (in years)</label>
+                            <input type="number" class="form-control" id="age" name="age">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight" class="col-form-label">Weight (in Kgs)</label>
+                            <input type="number" class="form-control" id="weight" name="weight">
+                        </div>
+                        <div class="form-group">
+                            <label for="height" class="col-form-label">Height</label>
+                            <input type="text" class="form-control" id="height" name="height">
+                        </div>
+                        <div class="form-group">
+                            <label for="ailments" class="col-form-label">List of Ailments (if any)</label>
+                            <input type="text" class="form-control" id="ailments" name="ailments">
+                        </div>
+                        <div class="form-group">
+                            <label for="consultation-date" class="col-form-label">Consultation Date</label>
+                            <input type="date" class="form-control" id="consultation-date" name="consultation-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="appoinment-time" class="col-form-label">Consultation Time</label>
+                            <input type="time" class="form-control" id="consultation-time" name="consultation-time">
+                        </div>
+                        <div class="form-group">
+                            <label for="consultation-type" class="col-form-label">Consultation With</label>
+                            <select class="form-control" id="consultation-type" name="consultation-type">
+                                <option>Dietitian</option>
+                                <option>Doctor</option>
+                                <option>Fitness Trainer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <!--<option value="" disabled selected>Select your doctor</option>-->
+                            <select id="consultation-with-doctor" name="consultation-with-doctor">
+                                DOCTOR
+                            </select>
+                            <select id="consultation-with-dietitian" name="consultation-with-dietitian">
+                                DIETITIAN
+                            </select>
+                            <select id="consultation-with-fitness_trainer" name="consultation-with-fitness_trainer">
+                                FITNESSTRAINER
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-mode" class="col-form-label">Consultation Mode</label>
+                            <select class="form-control" id="consultation-mode" name="consultation-mode">
+                                <option value="" disabled selected>Select the consultation-mode</option>
+                                <option>Telephonic</option>
+                                <option>Video</option>
+                                <option>In-Person</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-payment" class="col-form-label">Payment Options</label>
+                            <select class="form-control" id="consultation-payment" name="consultation-payment">
+                                <option value="Prepaid">Prepaid</option>
+                                <option value="To be paid">To be paid</option>
+                                <option value="Free">Free</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="consultation-charge">
+                            <label for="consultation-charges" class="col-form-label">Amount Paid/to be paid</label>
+                            <input type="number" class="form-control" id="consultation-charges" name="consultation-charges">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pre-consultation-notes" class="col-form-label">Your Notes</label>
+                            <input type="text" class="form-control" id="pre-consultation-notes" name="pre-consultation-notes">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="consultation_button">Book Consultation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML For Consultation POP UP FORM-->
+    <div class="modal fade" id="ConsultationDonePopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Consultation Notes</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-group">
+                            <label for="recommendations" class="col-form-label">Lifestyle Recommendations (for patient)</label>
+                            <input type="text" class="form-control" id="recommendations">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-notes" class="col-form-label">Other Notes (for Sales Team)</label>
+                            <input type="text" class="form-control" id="consultation-notes">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-mode" class="col-form-label">Consultation Mode</label>
+                            <select class="form-control" id="consultation-mode" name="consultation-mode">
+                                <option value="" disabled selected>Select the consultation-mode</option>
+                                <option value="Telephonic">Telephonic</option>
+                                <option value="Video">Video</option>
+                                <option value="In-Person">In-Person</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-payment" class="col-form-label">Payment Options</label>
+                            <select class="form-control" id="consultation-payment" name="consultation-payment">
+                                <option value="Prepaid">Prepaid</option>
+                                <option value="To be paid">To be paid</option>
+                                <option value="Free">Free</option>
+                            </select>
+                        </div>
+
+                        <div id="Consultation.With">
+                        </div>
+
+                        <div id="PreConsultantInputDetails">
+                        </div>
+                    </form>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="consultationdone_button">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const myForm = document.getElementById('bookconsultation');
+
+        myForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const searchParams = new URLSearchParams();
+
+            for (const pair of formData) {
+                searchParams.append(pair[0], pair[1]);
+            }
+
+            //Append the phone number
+            var phone = window.customerID;
+            searchParams.append("phone", phone);
+
+            var age = document.getElementById("age").value;
+            var weight = document.getElementById("weight").value;
+            var height = document.getElementById("height").value;
+            var ailments = document.getElementById("ailments").value;
+            var pre_consultation_notes = document.getElementById("pre-consultation-notes").value;
+            var new_consultation = {
+                booked_on: new Date(),
+                date: document.getElementById("consultation-date").value,
+                time: document.getElementById("consultation-time").value,
+                type: document.getElementById("consultation-type").value,
+                mode: document.getElementById("consultation-mode").value,
+                payment_options: document.getElementById("consultation-payment").value,
+                charges: document.getElementById("consultation-charges").value
+
+            }
+
+            switch (new_consultation.type) {
+                case "Doctor":
+                    new_consultation.with = document.getElementById("consultation-with-doctor").value;
+                    break;
+                case "Dietitian":
+                    new_consultation.with = document.getElementById("consultation-with-dietitian").value;
+                    break;
+                case "Fitness Trainer":
+                    new_consultation.with = document.getElementById("consultation-with-fitness_trainer").value;
+            }
+
+            //Now go to the corresponding Lead and update its status to Done
+            var leadRef = firebase.firestore().collection('leads').doc(phone);
+            leadRef.get().then(doc => {
+                if (doc.exists) {
+                    leadRef.update({ status: "Booked Consultation" });
+                    leadRef.update({ consultation: new_consultation });
+                    if (age)
+                        leadRef.update({ age: age });
+                    if (weight)
+                        leadRef.update({ weight: weight });
+                    if (height)
+                        leadRef.update({ height: height });
+                    if (ailments)
+                        leadRef.update({ ailments: ailments });
+                    if (pre_consultation_notes)
+                        leadRef.update({ pre_consultation_notes: pre_consultation_notes });
+                    if (pre_consultant)
+                        leadRef.update({ pre_consultant: pre_consultant });
+
+                    fetch('/send_book_consultation_email', {
+                        method: 'post',
+                        body: searchParams
+                    }).then(function (response) {
+                        if (response.status == "200") {
+                            $("#ConsultationPopUp").modal('hide');
+                            document.getElementById(window.customerID).style.display = 'none';
+                            alert("Booked Consultation Successfully");
+                        }
+                        return response.text();
+                    }).then(function (text) {
+                        console.log(text);
+                    }).catch(function (error) {
+                        console.error(error);
+                    })
+                }
+            });
+        });
+    </script>
+
+    <!-- HTML For  PopUp for adding remarks on "TrashLead"-->
+    <div class="modal fade" id="TrashPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Notes For Trash Lead</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="add-remarks" class="col-form-label">Add Remarks</label>
+                            <input type="text" name="add-remarks" class="form-control" id="add-remarks">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="remarks_button">Add Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML For  PopUp for adding remarks on "Contacted Lead"-->
+    <div class="modal fade" id="ContactedPopUp2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Notes For Contacted Lead</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="add-remarks2" class="col-form-label">Add Remarks</label>
+                            <input type="text" name="add-remarks2" class="form-control" id="add-remarks2">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="remarks_button2">Add Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var docRef = firebase.firestore().collection("doctors");
+            var allDoctors = docRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    $("#consultation-with-doctor").append(new Option(doc.data().name, doc.data().name));
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var coachRef = firebase.firestore().collection("coaches");
+            var allCoaches = coachRef.where('coach_type', '==', 'Achara').get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    $("#consultation-with-dietitian").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            var coachRef = firebase.firestore().collection("coaches");
+            var allCoaches = coachRef.where('coach_type', '==', 'Vihara').get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                snapshot.forEach(doc => {
+                    $("#consultation-with-fitness_trainer").append(new Option(doc.data().coach_name, doc.data().coach_name));
+                });
+            })
+                .catch(err => {
+                    console.log("Error: ", err);
+                })
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function formatTheTime(time) {
+            if (time) {
+                if (typeof time == "string") {
+                    if (time[2] == '-')
+                        time = time.slice(0, 11);
+                    else if (typeof time[2] == 'number')
+                        time = time.slice(0, 10);
+                    else
+                        time = time.slice(0, 10);
+                }
+                else {
+                    time = time.toString().slice(0, 15);
+                }
+                return time;
+            }
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+
+            var leadRef = firebase.firestore().collection("leads");
+            leadRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+                var count = 1;
+                var notContactedCount = 0;
+                snapshot.forEach(doc => {
+                    if (doc.data().status == "Not Contacted" || doc.data().status == "Contacted") {
+
+                        var notes = "<b>Pre-Consultation</b>: ";
+                        notes += (doc.data().pre_consultation_notes || "None");
+                        if (doc.data().consultation) {
+                            notes += ". <b>Consultation <</b>" + doc.data().consultation.with + ">: ";
+                            notes += (doc.data().consultation.notes || "None");
+                            notes += ".";
+                        }
+
+                        var last_interaction_on = formatTheTime(doc.data().last_interaction_on);
+                        if (!last_interaction_on)
+                            last_interaction_on = formatTheTime(doc.data().added_time);
+
+                        var status = doc.data().status;
+                        var quiz_data = "";
+
+                        //Fill up PCOS Quiz Data
+                        if (doc.data().pcos_quiz_data) {
+                            var pcos_quiz_data = "Has ";
+                            if (doc.data().pcos_quiz_data.acne == "Yes")
+                                pcos_quiz_data += "Acne, ";
+                            if (doc.data().pcos_quiz_data.depression == "Yes")
+                                pcos_quiz_data += "Depression, ";
+                            if (doc.data().pcos_quiz_data.difficulty_losing_weight == "Yes")
+                                pcos_quiz_data += "Difficulty Losing Weight, ";
+                            if (doc.data().pcos_quiz_data.facial_hair == "Yes")
+                                pcos_quiz_data += "Facial Hair, ";
+                            if (doc.data().pcos_quiz_data.infertility == "Yes")
+                                pcos_quiz_data += "History of Infertility, ";
+                            if (doc.data().pcos_quiz_data.irregular_cycle == "Yes")
+                                pcos_quiz_data += "Irregular Cycles";
+                            pcos_quiz_data += " and the most concerning symptom is " + doc.data().pcos_quiz_data.most_concerning_symptom;
+                            pcos_quiz_data += ". Her Risk score is " + "<b>" + doc.data().pcos_quiz_data.pcos_risk + "</b>. ";
+
+                            quiz_data += pcos_quiz_data;
+                        }
+
+                        if (doc.data().iat_data) {
+                            quiz_data += "<b>Immunity Score</b>: " + doc.data().iat_data.immunity_score;
+                        }
+
+                        if (doc.data().pre_consultant) {
+                            var pre_consultant1 = doc.data().pre_consultant;
+                        }
+
+                        else {
+                            var pre_consultant1 = "NA";
+                        }
+
+
+                        if (status == "Not Contacted") {
+
+                            if (pre_consultant1 != "NA") {
+                                $("#leadstable").append('<tr' + ' id="' + doc.data().phone + '"> <td>' + doc.data().name + '</td><td>' +
+                                    doc.data().email + '</td><td>' + '<p><a href="https://api.whatsapp.com/send?phone=' + CheckWhatsappNumber(doc.data().phone) + '&text=Hi%20there!%20Your%20website%20sent%20me%20here.%20I%20want%20more%20details%20about%20your%20programs" target="_blank">' + doc.data().phone + '</a></p>' + '</td><td>' +
+                                    (last_interaction_on || 'NA') + '</td><td>' + doc.data().source + "; " + (doc.data().funnel || 'None') + '</td><td>' +
+                                    (quiz_data || 'NA') + '</td><td>' + notes + '</td><td>' + '<select class="form-control" id="salesrepselect"><option value="" disabled selected>' + (pre_consultant1 || "NA") + '</option><option value="Anjali Thakur">Anjali Thakur</option><option value="Nikita Barve">Nikita Barve</option><option value="Raro George">Raro George</option><option value="Shalini Kaushik">Shalini Kaushik</option></select>' + '</td><td>' +
+                                    '<select class="form-control" id="customselect3" ><option value="" disabled selected>' + doc.data().status + '</option><option value="0">Not Contacted</option><option value="1">Contacted</option><option value="2">Booked Consultation</option><option value="3">Trash Lead</option><option value="4">Consultation Done</option></select>'
+                                    + '</td></tr>')
+
+                            }
+
+
+                            else {
+                                $("#leadstable").append('<tr class="tr1" style="background-color: #ffcccb;"' + ' id="' + doc.data().phone + '"> <td>' + doc.data().name + '</td><td>' +
+                                    doc.data().email + '</td><td>' + '<p><a href="https://api.whatsapp.com/send?phone=' + CheckWhatsappNumber(doc.data().phone) + '&text=Hi%20there!%20Your%20website%20sent%20me%20here.%20I%20want%20more%20details%20about%20your%20programs" target="_blank">' + doc.data().phone + '</a></p>' + '</td><td>' +
+                                    (last_interaction_on || 'NA') + '</td><td>' + doc.data().source + "; " + (doc.data().funnel || 'None') + '</td><td>' +
+                                    (quiz_data || 'NA') + '</td><td>' + notes + '</td><td>' + '<select class="form-control" id="salesrepselect"><option value="" disabled selected>' + (pre_consultant1 || "NA") + '</option><option value="Anjali Thakur">Anjali Thakur</option><option value="Nikita Barve">Nikita Barve</option><option value="Raro George">Raro George</option><option value="Shalini Kaushik">Shalini Kaushik</option></select>' + '</td><td>' +
+                                    '<select class="form-control" id="customselect3" disabled><option value="" disabled selected>' + doc.data().status + '</option><option value="0">Not Contacted</option><option value="1">Contacted</option><option value="2">Booked Consultation</option><option value="3">Trash Lead</option><option value="4">Consultation Done</option></select>'
+                                    + '</td></tr>')
+                            }
+
+                        }
+
+                        else {
+                            $("#leadstable").append('<tr' + ' id="' + doc.data().phone + '"> <td>' + doc.data().name + '</td><td>' +
+                                doc.data().email + '</td><td>' + '<p><a href="https://api.whatsapp.com/send?phone=' + CheckWhatsappNumber(doc.data().phone) + '&text=Hi%20there!%20Your%20website%20sent%20me%20here.%20I%20want%20more%20details%20about%20your%20programs" target="_blank">' + doc.data().phone + '</a></p>' + '</td><td>' +
+                                (last_interaction_on || 'NA') + '</td><td>' + doc.data().source + "; " + (doc.data().funnel || 'None') + '</td><td>' +
+                                (quiz_data || 'NA') + '</td><td>' + notes + '</td><td>' + '<select class="form-control" id="salesrepselect"><option value="" disabled selected>' + (pre_consultant1 || "NA") + '</option><option value="Anjali Thakur">Anjali Thakur</option><option value="Nikita Barve">Nikita Barve</option><option value="Raro George">Raro George</option><option value="Shalini Kaushik">Shalini Kaushik</option></select>' + '</td><td>' +
+                                '<select class="form-control" id="customselect3" ><option value="" disabled selected>' + doc.data().status + '</option><option value="0">Not Contacted</option><option value="1">Contacted</option><option value="2">Booked Consultation</option><option value="3">Trash Lead</option><option value="4">Consultation Done</option></select>'
+                                + '</td></tr>')
+                        }
+
+                    }
+                });
+                document.getElementById("demo1").innerHTML = "Total " + notContactedCount + " Not Contacted Rows in the table.";
+            });
+        })
+    </script>
+
+    <!-- JQuery & Javascript To Show Doctors Select Box-->
+    <script>
+        $(document).ready(function () {
+            $('#consultation-with-doctor').hide();
+            $('#consultation-with-fitness_trainer').hide();
+
+            $('#consultation-type').change(function () {
+                if ($('#consultation-type option:selected').text() == "Doctor") {
+                    $('#consultation-with-doctor').show();
+                    $('#consultation-with-dietitian').hide();
+                    $('#consultation-with-fitness_trainer').hide();
+                }
+                else if ($('#consultation-type option:selected').text() == "Dietitian") {
+                    $('#consultation-with-doctor').hide();
+                    $('#consultation-with-dietitian').show();
+                    $('#consultation-with-fitness_trainer').hide();
+                }
+                else if ($('#consultation-type option:selected').text() == "Fitness Trainer") {
+                    $('#consultation-with-doctor').hide();
+                    $('#consultation-with-dietitian').hide();
+                    $('#consultation-with-fitness_trainer').show();
+                }
+            });
+        });
+    </script>
+
+    <!-- JQuery & Javascript To Show PopUp On Selecting Book Consultation In Drop Down Select-->
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).on('change', '#customselect3', function () {
+
+            //Store the Lead ID in a global variable
+            window.customerID = $(this).parent().parent().attr('id');
+
+            document.getElementById(window.customerID).style.backgroundColor = "";
+
+
+            if ($(this).val() == 1) {
+                $("#ContactedPopUp2").modal('show');
+            }
+            else if ($(this).val() == 3) {
+                $("#TrashPopUp").modal('show');
+            }
+            else if ($(this).val() == 2) {
+                $("#ConsultationPopUp").modal('show');
+            }
+
+            else if ($(this).val() == 4) {
+                $("#ConsultationDonePopUp").modal('show');
+            }
+
+        });
+    </script>
+
+    <script>
+        $(document).on('change', '#consultation-payment', function () {
+
+            if ($('#consultation-payment option:selected').text() != "Free") {
+                $('#consultation-charge').show();
+            }
+
+            else {
+                $('#consultation-charge').hide();
+            }
+        });
+    </script>
+
+    <!-- Script For Updating Status And Pre-Consultation Notes From "Trash Lead" (Add Remarks) Popup-->
+    <script>
+        $(document).ready(function () {
+            $("#remarks_button").click(function () {
+                var phone = window.customerID;
+                var pre_consultation_notes = document.getElementById("add-remarks").value;
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        leadRef.update({ status: "Trash Lead" });
+                        leadRef.update({ pre_consultant: pre_consultant });
+                        leadRef.update({ pre_consultation_notes: pre_consultation_notes });
+                    }
+                });
+                $("#TrashPopUp").modal('hide');
+                document.getElementById(window.customerID).style.display = 'none';
+            })
+        })
+    </script>
+
+    <!-- Script For Updating Status And Pre-Consultation Notes From "Trash Lead" (Add Remarks) Popup-->
+    <script>
+        $(document).ready(function () {
+            $("#consultationdone_button").click(function () {
+                var phone = window.customerID;
+
+                var new_recommendations = document.getElementById("recommendations").value;
+                var new_consultation_notes = document.getElementById("consultation-notes").value;
+                var new_consultation_mode = document.getElementById("consultation-mode").value;
+                var new_consultation_payment = document.getElementById("consultation-payment").value;
+
+                var consultationdonedate = new Date();
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+
+                        var new_consultation = (doc.data().consultation || {});
+
+                        new_consultation.recommendations = new_recommendations;
+                        new_consultation.notes = new_consultation_notes;
+                        new_consultation.mode = new_consultation_mode;
+                        new_consultation.payment_options = new_consultation_payment;
+                        new_consultation.booked_on = consultationdonedate;
+
+
+                        leadRef.update({ status: "Consultation Done" });
+                        leadRef.update({ consultation: new_consultation });
+
+
+                        document.getElementById("Consultation.With").innerHTML = "Pre-Consultant: " + doc.data().pre_consultant;
+
+                        document.getElementById("PreConsultantInputDetails").innerHTML = "Recommendations:" + new_recommendations + "<br>" + "Consultation Notes:" + new_consultation_notes + "<br>" + "Consultation.Date & Time:" + consultationdonedate;
+                    }
+                });
+                // $("#ConsultationDonePopUp").modal('hide');
+                document.getElementById(window.customerID).style.display = 'none';
+            })
+        })
+    </script>
+
+    <!-- Script For Updating Status And Pre-Consultation Notes From "Contacted" (Add Remarks) Popup-->
+    <script>
+        $(document).ready(function () {
+            $("#remarks_button2").click(function () {
+                var phone = window.customerID;
+                var pre_consultation_notes = document.getElementById("add-remarks2").value;
+
+                //Now go to the corresponding Lead and update its status to Done
+                var leadRef = firebase.firestore().collection('leads').doc(phone);
+                leadRef.get().then(doc => {
+                    if (doc.exists) {
+                        leadRef.update({ status: "Contacted" });
+                        leadRef.update({ pre_consultation_notes: pre_consultation_notes });
+                        leadRef.update({ pre_consultant: pre_consultant });
+                    }
+                });
+                $("#ContactedPopUp2").modal('hide');
+            })
+        })
+    </script>
+
+    <script>
+        var pre_consultant = "";
+        $(document).on('change', '#salesrepselect', function () {
+
+            window.customerID = $(this).parent().parent().attr('id');
+            var currentRow = document.getElementById(window.customerID);
+
+            var cells = currentRow.getElementsByTagName("td");
+            if (cells.length != 0) {
+                var lastCell = cells[cells.length - 1];
+
+                var dropdown = lastCell.getElementsByTagName("select");
+                if (dropdown.length != 0) {
+                    var myDropdown = dropdown[dropdown.length - 1];
+                    $(myDropdown).prop("disabled", false);
+                    pre_consultant = $(this).find("option:selected").text();
+                }
+            }
+
+        });
+
+    </script>
+
+    <script>
+        function CheckWhatsappNumber(phonenumber) {
+            var n = phonenumber.includes("+91");
+            if (n == true) {
+                return phonenumber;
+            }
+
+
+            else {
+                var txt2 = phonenumber.slice(0, 0) + "+91" + phonenumber.slice(0);
+                return txt2;
+            }
+
+        }
+    </script>
+
+
+
+
+</body>
+</html>

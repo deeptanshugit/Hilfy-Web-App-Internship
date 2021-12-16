@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sales Analytics | Modern Monk</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300.400.500.700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="consultation-date" class="col-form-label">Select Date</label>
+            <select name="data_date" id="data_date" class="form-control">
+                <option value="Today">Today</option>
+                <option value="Yesterday">Yesterday</option>
+                <option value="Last7Days">Last 7 Days (excluding today)</option>
+                <option value="ThisMonth">This Month</option>
+                <option value="LastMonth">Last Month</option>
+            </select> <br />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="table-responsive">
+            <h2>Pre-Consultations by Source</h2>
+            <br />
+            <table class="table table-bordered table-striped" id="leads_by_source_table">
+                <tr>
+                    <th>Date Range</th>
+                    <th>Website</th>
+                    <th>WhatsApp</th>
+                    <th>Referral</th>
+                    <th>FB Group</th>
+                    <th>PCOS Quiz</th>
+                    <th>Prakriti Quiz</th>
+                </tr>
+            </table>
+            <h3 id="demo">  </h3>
+            <br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h2>Sales Funnel Flow</h2>
+            <br />
+            <table class="table table-bordered table-striped" id="analytics_table">
+                <tr>
+                    <th>Date Range</th>
+                    <th>New Leads</th>
+                    <th>Consultations Booked</th>
+                    <th>Consultations Done</th>
+                    <th>Leads Converted</th>
+                </tr>
+            </table>
+            <h3 id="demo">  </h3>
+            <br>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        function getToday(today) {
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+
+            return today;
+        }
+    </script>
+
+    <script>
+        function updateTables() {
+            var date_range = document.getElementById("data_date").value;
+            var sel_date = [];
+            switch (date_range) {
+                case 'Today':
+                    sel_date.push(getToday(new Date()));
+                    break;
+                case 'Yesterday':
+                    var d = new Date();
+                    d.setDate(d.getDate() - 1);
+                    sel_date.push(getToday(d));
+                    break;
+                case 'Last7Days':
+                    var d = new Date();
+                    for (var i = 1; i <= 7; i++) {
+                        d.setDate(d.getDate() - 1);
+                        sel_date.push(getToday(d));
+                    }
+                    break;
+                case 'ThisMonth':
+                    var d = new Date();
+                    var len = d.getDate();
+                    for (var i = 1; i <= len; i++) {
+                        d.setDate(d.getDate() - 1);
+                        sel_date.push(getToday(d));
+                    }
+                    break;
+                case 'LastMonth':
+                    var d = new Date();
+                    d.setDate(d.getDate() - d.getDate());
+                    var len = d.getDate();
+                    for (var i = 1; i <= len; i++) {
+                        d.setDate(d.getDate() - 1);
+                        sel_date.push(getToday(d));
+                    }
+                    break;
+            }
+
+            var leadRef = firebase.firestore().collection("leads");
+            leadRef.get().then(snapshot => {
+                if (snapshot.empty) {
+                }
+
+                var count_leadsBySource = {
+                    website: 0,
+                    whatsapp: 0,
+                    PCOS_Quiz: 0,
+                    Prakriti_Quiz: 0,
+                    FB_Group: 0,
+                    referral: 0
+                };
+
+                var count_salesFunnel = {
+                    new_leads: 0,
+                    consultations_booked: 0,
+                    consultations_done: 0,
+                    leads_converted: 0
+                };
+
+                snapshot.forEach(doc => {
+                    if (doc.data().added_time) {
+                        var added_time = doc.data().added_time;
+                        for (var i = 0; i < sel_date.length; i++) {
+                            if (added_time.toString().indexOf(sel_date[i]) != -1) {
+                                switch (doc.data().source) {
+                                    case "Website":
+                                        count_leadsBySource.website += 1;
+                                        break;
+                                    case "Facebook Group":
+                                        count_leadsBySource.FB_Group += 1;
+                                        break;
+                                    case "Referral":
+                                        count_leadsBySource.referral += 1;
+                                        break;
+                                    case "PCOS Quiz":
+                                        count_leadsBySource.PCOS_Quiz += 1;
+                                        break;
+                                    case "Prakriti Quiz":
+                                        count_leadsBySource.Prakriti_Quiz += 1;
+                                        break;
+                                    case "WhatsApp Chat":
+                                        count_leadsBySource.whatsapp += 1;
+                                        break;
+                                }
+                            }
+
+                            if (doc.data().consultation) {
+                                //#Booked
+                                if (doc.data().consultation.booked_on) {
+                                    var booked_on = getToday(doc.data().consultation.booked_on);
+                                    if (booked_on == sel_date[i]) {
+                                        count_salesFunnel.consultations_booked += 1;
+                                    }
+                                }
+
+                                //#Done
+                                if (doc.data().consultation.date) {
+                                    if (doc.data().consultation.date.toString().indexOf(sel_date[i]) != -1) {
+                                        count_salesFunnel.consultations_done += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                var userRef = firebase.firestore().collection("users");
+                userRef.get().then(snapshot => {
+                    if (snapshot.empty) {
+                    }
+
+                    snapshot.forEach(doc => {
+                        if (doc.data().date_added) {
+                            var added_time = doc.data().date_added;
+
+                            //#Converted
+                            for (var i = 0; i < sel_date.length; i++) {
+                                if (added_time.toString().indexOf(sel_date[i]) != -1) {
+                                    count_salesFunnel.leads_converted += 1;
+                                }
+                            }
+                        }
+                    })
+
+                    count_salesFunnel.new_leads = count_leadsBySource.website + count_leadsBySource.FB_Group +
+                        count_leadsBySource.referral + count_leadsBySource.PCOS_Quiz +
+                        count_leadsBySource.Prakriti_Quiz + count_leadsBySource.whatsapp;
+
+                    $("#leads_by_source_table").append('<tr> <td>' + date_range + '</td><td>' + count_leadsBySource.website + '</td><td>' +
+                        count_leadsBySource.whatsapp + '</td><td>' + count_leadsBySource.referral + '</td><td>' + count_leadsBySource.FB_Group + '</td><td>' +
+                        count_leadsBySource.PCOS_Quiz + '</td><td>' + count_leadsBySource.Prakriti_Quiz + '</td></tr>')
+
+                    $("#analytics_table").append('<tr> <td>' + date_range + '</td><td>' + count_salesFunnel.new_leads + '</td><td>' +
+                        count_salesFunnel.consultations_booked + '</td><td>' + count_salesFunnel.consultations_done +
+                        '</td><td>' + count_salesFunnel.leads_converted + '</td></tr>')
+                })
+            });
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            updateTables();
+        })
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#data_date").change(function (evt) {
+                updateTables();
+            })
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Today's Sessions</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDb7onj65ISpKs6vtt2h4agZcamVCurUPU",
+            authDomain: "diet-calendar-b3d5a.firebaseapp.com",
+            databaseURL: "https://diet-calendar-b3d5a.firebaseio.com",
+            projectId: "diet-calendar-b3d5a",
+            storageBucket: "diet-calendar-b3d5a.appspot.com",
+            messagingSenderId: "357932927864"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="users.js"></script> -->
+    <script>
+        function _appendRowString(tableID, date, ID, leadName, phone, classType) {
+            $(tableID).append('<tr' + ' id="' + ID + '"> <td>' + date + '</td><td>' +
+                leadName + '</td><td>' + '<p><a href="https://api.whatsapp.com/send?phone=+91' + phone + '&" target="_blank">' + phone + '</a></p>' + '</td><td>' + classType + '<td></tr> ');
+        }
+    </script>
+
+    <script>
+        function appendRowString(tableID, date, ID, phone, classType, callback) {
+            if (classType == 'Demo') {
+                var leadRef = firebase.firestore().collection("leads");
+                leadRef.where('phone', '==', phone)
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+                        snapshot.forEach(doc => {
+                            callback(tableID, date, ID, doc.data().name, phone, classType);
+                        })
+                    })
+            }
+            else {
+                var userRef = firebase.firestore().collection("users");
+                userRef.where('phone', '==', phone)
+                    .get().then(snapshot => {
+                        if (snapshot.empty) {
+                        }
+                        snapshot.forEach(doc => {
+                            callback(tableID, date, ID, doc.data().user_name, phone, classType);
+                        })
+                    })
+            }
+        }
+    </script>
+
+    <script>
+        function changeTimestampToString(today) {
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+            return today;
+        }
+    </script>
+
+</head>
+<body>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="table_date" class="col-form-label">Select Date</label>
+            <input type="date" name="table_date" class="form-control" id="table_date">
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>6am - 7am</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="6_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>7am - 8am</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="7_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>8am - 9am</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="8_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>11am - 12pm</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="11_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>4pm - 5pm</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="16_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>5pm - 6pm</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="17_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="table-responsive">
+            <h3>6pm - 7pm</h3>
+            <br />
+            <table class="table table-bordered table-striped" id="18_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Participant Type</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function updateTables() {
+            var today = new Date(document.getElementById("table_date").value);
+            today = changeTimestampToString(today);
+
+            var coachRef = firebase.firestore().collection("coaches");
+            coachRef.where('coach_name', '==', 'Raro George')
+                .get().then(snapshot => {
+                    if (snapshot.empty) {
+                    }
+                    snapshot.forEach(doc => {
+                        for (var i = 0; i < doc.data().schedule.length; i++) {
+                            var callDate = changeTimestampToString(doc.data().schedule[i].callDate.toDate());
+
+                            if (callDate == today) {
+                                var ID = 'c' + doc.data().phone + doc.data().schedule[i].patientID + callDate;
+                                var classType = doc.data().schedule[i].classType;
+
+                                switch (doc.data().schedule[i].callDate.toDate().getHours()) {
+                                    case 6:
+                                        appendRowString("#6_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 7:
+                                        appendRowString("#7_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 8:
+                                        appendRowString("#8_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 11:
+                                        appendRowString("#11_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 16:
+                                        appendRowString("#16_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 17:
+                                        appendRowString("#17_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                    case 18:
+                                        appendRowString("#18_table", today, ID, doc.data().schedule[i].patientID, classType, _appendRowString);
+                                        break;
+                                }
+                            }
+                        }
+                    })
+                })
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $("#table_date").change(function (evt) {
+                updateTables();
+            })
+        })
+    </script>
+</body>
+</html>
